@@ -6,6 +6,8 @@ import { SelectedTask } from './component/selectedTask';
 import { InputAddTask } from './component/inputAddTask';
 import { SearchToggleFilter } from './component/SearchToggleFilter';
 import { ListTasks } from './component/listTask';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCompletedTasks } from './store/features/taskSlice';
 
 
 const App = () => {
@@ -14,23 +16,27 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterOption, setFilterOption] = useState('all');
+  const storedTask = useSelector(state => state?.tasks)
+  const dispatch = useDispatch()
+
+
+
+
+
 
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (storedTasks) {
-      setTasks(storedTasks);
+    if(storedTask?.tasks?.length){
+      setTasks(storedTask.tasks)
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+  }, [storedTask])
 
 
-  console.log("tasks", tasks)
+
+
+
 
   const handleClearCompleted = () => {
-    setTasks(tasks.filter((task) => !task.completed));
+    dispatch(clearCompletedTasks())
   };
 
 
@@ -73,6 +79,7 @@ const App = () => {
               setTasks={setTasks}
               tasks={tasks}
               setSelectedTask={setSelectedTask}
+              selectedTask={selectedTask}
               filterOption={filterOption}
               searchQuery={searchQuery}
               darkMode={darkMode}

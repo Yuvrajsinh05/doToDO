@@ -12,16 +12,11 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 
 export const SearchToggleFilter = ({darkMode,setDarkMode,setFilterOption,filterOption,setSearchQuery,searchQuery}) => {
-
-    const handleDarkModeToggle = () => {
-        setDarkMode(!darkMode);
-      };
-    
     return (
         <>
             <Box display="flex" alignItems="center">
                 <Typography variant="body2" sx={{ marginRight: '8px' }}>Toggle  Mode</Typography>
-                <IconButton onClick={handleDarkModeToggle} color="inherit">
+                <IconButton onClick={()=> setDarkMode(!darkMode)} color="inherit">
                     {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                 </IconButton>
                 <TextField
@@ -40,8 +35,10 @@ export const SearchToggleFilter = ({darkMode,setDarkMode,setFilterOption,filterO
                     sx={{ marginLeft: '8px', backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.04)' }}
                 >
                     <MenuItem value="all">All</MenuItem>
-                    <MenuItem value="completed">Completed</MenuItem>
-                    <MenuItem value="pending">Pending</MenuItem>
+                    <MenuItem value="inprogress">inprogress</MenuItem>
+                    <MenuItem value="completed">completed</MenuItem>
+                    <MenuItem value="hold">hold</MenuItem>
+                    <MenuItem value="notpicked">notpicked</MenuItem>
                 </Select>
             </Box>
         </>

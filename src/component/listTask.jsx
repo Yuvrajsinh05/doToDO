@@ -1,59 +1,57 @@
 import React from 'react';
 import { Button, Box, Switch, CardActions } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-
-
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import UploadIcon from '@mui/icons-material/CloudUpload'; // Example upload icon
-import BadgeIcon from '@mui/icons-material/AssignmentTurnedIn';
-
+import { useSelector, useDispatch } from 'react-redux'; // Importing useSelector
+import { removeTask, selectTasks ,updateTask} from '../store/features/taskSlice';
 import { TaskCardContent, TaskCard, TaskText } from '../customconfig/customComponent';
-// import  from './customconfig/customComponent';
 
+export const ListTasks = ({ setSelectedTask, filterOption, searchQuery, darkMode }) => {
+    const dispatch = useDispatch();
+    const tasks = useSelector(selectTasks); 
 
-
-export const ListTasks = ({ setTasks, tasks, setSelectedTask, filterOption, searchQuery, darkMode }) => {
-
-
-    const handleDeleteTask = (index) => {
-        setTasks(tasks.filter((_, i) => i !== index));
+    const handleDeleteTask = (task) => {
+        dispatch(removeTask(task.id)); 
         setSelectedTask(null);
     };
 
-    const handleTaskCompletion = (index) => {
-        const updatedTasks = [...tasks];
-        updatedTasks[index].completed = !updatedTasks[index].completed;
-        setTasks(updatedTasks);
-    };
-
-    const handleTaskClick = (task) => {
-        setSelectedTask(task);
-    };
-
-    const filteredTasks = tasks.filter(task => {
-        if (filterOption === 'all') {
-            return task.text.toLowerCase().includes(searchQuery.toLowerCase());
-        } else if (filterOption === 'completed') {
-            return task.completed && task.text.toLowerCase().includes(searchQuery.toLowerCase());
-        } else if (filterOption === 'pending') {
-            return !task.completed && task.text.toLowerCase().includes(searchQuery.toLowerCase());
+    const handleTaskCompletion = (id) => {
+        const taskToUpdate = tasks.find(task => task.id === id); 
+        if (taskToUpdate) {
+            dispatch(updateTask({ id, updateTaskData : { completed: !taskToUpdate.completed } }));
         }
-        return true;
+    };
+    
+    const filteredTasks = tasks?.filter(task => {
+        const title = task?.title?.toLowerCase();
+        if (!title) return false;    
+        const status = task.status.toLowerCase();
+        switch (filterOption) {
+            case 'all':
+                return title.includes(searchQuery.toLowerCase()) || status.includes(searchQuery.toLowerCase());
+            default:
+                return status === filterOption && title.includes(searchQuery.toLowerCase());
+        }
     });
+    
 
     return (
         <>
             <Box sx={{ height: '400px', overflowY: 'auto', marginTop: '0.5rem', scrollbarWidth: 'none' }}>
-
-                {filteredTasks.map((task, index) => (
-                    <TaskCard key={index} darkMode={darkMode} onClick={() => handleTaskClick(task)}>
+                {filteredTasks?.map((task, index) => (
+                    <TaskCard key={index} darkMode={darkMode} onClick={() => setSelectedTask(task)}>
                         <TaskCardContent>
-                            <Switch checked={task.completed} onChange={() => handleTaskCompletion(index)} />
-                            <TaskText variant="body1" completed={task.completed}>
-                                {task.text}
+                            <Switch checked={task?.completed} onChange={() => handleTaskCompletion(task.id)} />
+                            <TaskText  variant="body1" completed={task.completed}>
+                                {task.title}
+                            </TaskText>
+                            <TaskText  variant="body1" completed={task.completed}>
+                                {task.status}
+                            </TaskText>
+                            <TaskText  variant="body1" completed={task.completed}>
+                                {task.id}
                             </TaskText>
                             <CardActions>
-                                <Button size="small" color="secondary" onClick={() => handleDeleteTask(index)}>
+                                <Button size="small" color="secondary" onClick={() => handleDeleteTask(task)}>
                                     <DeleteIcon />
                                 </Button>
                             </CardActions>

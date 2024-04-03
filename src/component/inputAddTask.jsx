@@ -3,16 +3,28 @@ import React, { useState } from 'react';
 import { TextField, Button, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { darkModeColors, lightModeColors } from '../customconfig/customComponent';
+import { useDispatch, useSelector } from 'react-redux';
+import { addTask } from '../store/features/taskSlice';
 
 
 
 export const InputAddTask = ({ setTasks, tasks, darkMode }) => {
     const [newTask, setNewTask] = useState('');
+    const dispatch = useDispatch()
+
+    
     const handleAddTask = () => {
-        if (newTask.trim() !== '') {
-            setTasks([...tasks, { text: newTask, completed: false, createdAt: new Date().toISOString() }]);
-            setNewTask('');
+        if (newTask.trim() == '') return
+        setTasks([...tasks, { text: newTask, completed: false, createdAt: new Date().toISOString() }]);
+        setNewTask('');
+        const newTaskData = {
+            title: newTask,
+            description: '',
+            createdAt: new Date().toISOString(),
+            status: 'notpicked',
+            completed: false
         }
+        dispatch(addTask(newTaskData))
     };
 
 
