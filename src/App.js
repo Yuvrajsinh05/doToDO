@@ -67,7 +67,7 @@ const App = () => {
                 <Typography variant="body2" sx={{ marginRight: '8px' }}>
                   Developed by:
                 </Typography>
-                <IconButton href="https://github.com/Yuvrajsinh05" target="_blank">
+                <IconButton href="https://github.com/Yuvrajsinh05/doToDO" target="_blank">
                   <GitHubIcon sx={{ color: !darkMode ? '#121212' : '#ffffff' }} />
                 </IconButton>
               </Box>
