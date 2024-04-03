@@ -27,7 +27,7 @@ const App = () => {
   }, [tasks]);
 
 
-  console.log("tasks",tasks)
+  console.log("tasks", tasks)
 
   const handleClearCompleted = () => {
     setTasks(tasks.filter((task) => !task.completed));
@@ -62,7 +62,7 @@ const App = () => {
                   Developed by:
                 </Typography>
                 <IconButton href="https://github.com/Yuvrajsinh05" target="_blank">
-                  <GitHubIcon />
+                  <GitHubIcon sx={{ color: !darkMode ? '#121212' : '#ffffff' }} />
                 </IconButton>
               </Box>
             </Box>
