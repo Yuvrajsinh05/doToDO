@@ -44,12 +44,12 @@ export const ListTasks = ({ setSelectedTask, filterOption, searchQuery, darkMode
                             <TaskText variant="body1" completed={task.completed}>
                                 {task.title}
                             </TaskText>
-                            <TaskText variant="body1" completed={task.completed}>
+                            {/* <TaskText variant="body1" completed={task.completed}>
                                 <b>
                                     {task.status}
                                 </b>
 
-                            </TaskText>
+                            </TaskText> */}
                             {/* <TaskText  variant="body1" completed={task.completed}>
                                 {task.id}
                             </TaskText> */}
